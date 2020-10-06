@@ -6,7 +6,6 @@ import com.cinema.lib.Dao;
 import com.cinema.model.MovieSession;
 import com.cinema.util.HibernateUtil;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import org.hibernate.Session;
@@ -29,7 +28,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Failed to add " + movieSession + " to the DB.", e);
+            throw new DataProcessingException("Failed to add the movie session "
+                    + movieSession + " to the DB.", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -40,17 +40,16 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public List<MovieSession> findSessionsByIdAndDate(Long movieId, LocalDate date) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            LocalDateTime start = date.atTime(LocalTime.MIN);
-            LocalDateTime end = date.atTime(LocalTime.MAX);
             Query<MovieSession> query =
                     session.createQuery("from MovieSession where movie_id = :movieId "
                     + "and showTime between :start AND :end", MovieSession.class);
             query.setParameter("movieId", movieId);
-            query.setParameter("start", start);
-            query.setParameter("end", end);
+            query.setParameter("start", date.atTime(LocalTime.MIN));
+            query.setParameter("end", date.atTime(LocalTime.MAX));
             return query.getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Failed to find available sessions", e);
+            throw new DataProcessingException("Failed to find available sessions with the movie "
+                    + "with ID " + movieId + " for the date " + date, e);
         }
     }
 }
