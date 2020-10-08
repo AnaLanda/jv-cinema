@@ -41,8 +41,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Query<ShoppingCart> query = session.createQuery("from ShoppingCart sc "
                     + "join fetch sc.user u "
                     + "left join fetch sc.tickets t "
-                    + "where u.id = :userId", ShoppingCart.class);
-            query.setParameter("userId", user.getId());
+                    + "where sc.user = :user", ShoppingCart.class);
+            query.setParameter("user", user);
             return query.getSingleResult();
         } catch (Exception e) {
             throw new DataProcessingException("Failed to find the shopping cart "
