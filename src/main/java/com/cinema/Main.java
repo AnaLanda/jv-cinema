@@ -76,7 +76,6 @@ public class Main {
         User userFromDb = userService.findByEmail("user@gmail.com").get();
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(userFromDb);
         shoppingCartService.addSession(movieSession1, userFromDb);
         System.out.println("Cart with tix: " + shoppingCartService.getByUser(userFromDb));
         shoppingCartService.clear(shoppingCartService.getByUser(userFromDb));
