@@ -84,6 +84,7 @@ public class Main {
                 (OrderService) injector.getInstance(OrderService.class);
         orderService.completeOrder(shoppingCartService.getByUser(userFromDb).getTickets(),
                 userFromDb);
+        shoppingCartService.addSession(movieSession1, userFromDb);
         shoppingCartService.addSession(movieSession2, userFromDb);
         Thread.sleep(5000);
         orderService.completeOrder(shoppingCartService.getByUser(userFromDb).getTickets(),
