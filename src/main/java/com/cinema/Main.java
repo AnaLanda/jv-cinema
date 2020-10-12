@@ -10,6 +10,7 @@ import com.cinema.security.AutheticationService;
 import com.cinema.service.CinemaHallService;
 import com.cinema.service.MovieService;
 import com.cinema.service.MovieSessionService;
+import com.cinema.service.OrderService;
 import com.cinema.service.ShoppingCartService;
 import com.cinema.service.UserService;
 import java.time.LocalDate;
@@ -21,7 +22,7 @@ public class Main {
     private static final String DATE = "20201021";
     private static final String DATE_TIME = "2020-10-21T10:15:30";
 
-    public static void main(String[] args) throws AuthenticationException {
+    public static void main(String[] args) throws AuthenticationException, InterruptedException {
         Movie movie = new Movie();
         movie.setTitle("Ferris Bueller's Day Off");
         movie.setDescription("A 1986 American teen comedy film starring Matthew Broderick as "
@@ -78,7 +79,16 @@ public class Main {
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(movieSession1, userFromDb);
         System.out.println("Cart with tix: " + shoppingCartService.getByUser(userFromDb));
-        shoppingCartService.clear(shoppingCartService.getByUser(userFromDb));
+
+        OrderService orderService =
+                (OrderService) injector.getInstance(OrderService.class);
+        orderService.completeOrder(shoppingCartService.getByUser(userFromDb).getTickets(),
+                userFromDb);
+        shoppingCartService.addSession(movieSession2, userFromDb);
+        Thread.sleep(5000);
+        orderService.completeOrder(shoppingCartService.getByUser(userFromDb).getTickets(),
+                userFromDb);
+        System.out.println("User's orders: " + orderService.getOrderHistory(userFromDb));
         System.out.println("Empty cart: " + shoppingCartService.getByUser(userFromDb));
     }
 }

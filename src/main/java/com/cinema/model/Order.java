@@ -3,24 +3,23 @@ package com.cinema.model;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "orders")
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
     private List<Ticket> tickets;
     private LocalDateTime orderDate;
     @ManyToOne
-    @MapsId
-    @JoinColumn(name = "id")
     private User user;
 
     public Long getId() {
@@ -53,6 +52,14 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" + "id=" + id + ", \n"
+                + "tickets=" + tickets + ", \n"
+                + "orderDate=" + orderDate + ", \n"
+                + "user=" + user + '}';
     }
 }
 
