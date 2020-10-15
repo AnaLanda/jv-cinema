@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import org.apache.log4j.Logger;
 
 public class Main {
-    private static final Logger log = Logger.getLogger(Main.class.getName());
+    private static final Logger log = Logger.getLogger(Main.class);
     private static Injector injector = Injector.getInstance("com.cinema");
     private static final String DATE = "20201021";
     private static final String DATE_TIME = "2020-10-21T10:15:30";
