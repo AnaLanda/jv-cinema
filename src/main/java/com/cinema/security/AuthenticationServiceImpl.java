@@ -1,6 +1,5 @@
 package com.cinema.security;
 
-import com.cinema.dao.CinemaHallDao;
 import com.cinema.exceptions.AuthenticationException;
 import com.cinema.lib.Inject;
 import com.cinema.lib.Service;
@@ -8,9 +7,8 @@ import com.cinema.model.User;
 import com.cinema.service.ShoppingCartService;
 import com.cinema.service.UserService;
 import com.cinema.util.HashUtil;
-import org.apache.log4j.Logger;
-
 import java.util.Optional;
+import org.apache.log4j.Logger;
 
 @Service
 public class AuthenticationServiceImpl implements AutheticationService {
