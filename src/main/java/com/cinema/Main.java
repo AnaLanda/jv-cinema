@@ -31,7 +31,7 @@ public class Main {
                 + "Ferris Bueller, a high-school slacker who skips school for a day in Chicago");
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
         movieService.add(movie);
-        movieService.getAll().forEach(log::debug);
+        movieService.getAll().forEach(log::info);
 
         CinemaHallService cinemaHallService =
                 (CinemaHallService)injector.getInstance(CinemaHallService.class);
@@ -43,8 +43,8 @@ public class Main {
         hall2.setCapacity(150);
         hall2.setDescription("A standard hall");
         cinemaHallService.add(hall2);
-        log.debug("All cinema halls: \n");
-        cinemaHallService.getAll().forEach(log::debug);
+        log.info("All cinema halls: \n");
+        cinemaHallService.getAll().forEach(log::info);
 
         MovieSession movieSession1 = new MovieSession();
         movieSession1.setCinemaHall(hall1);
@@ -59,19 +59,19 @@ public class Main {
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(movieSession1);
         movieSessionService.add(movieSession2);
-        log.debug("All available sessions: \n");
+        log.info("All available sessions: \n");
         movieSessionService.findAvailableSessions(movie.getId(),
                 LocalDate.parse(DATE, DateTimeFormatter.BASIC_ISO_DATE))
-                .forEach(log::debug);
+                .forEach(log::info);
 
         AutheticationService autheticationService =
                 (AutheticationService) injector.getInstance(AutheticationService.class);
         User user1 = new User();
         user1.setEmail("user@gmail.com");
         user1.setPassword("password");
-        log.debug("User1 has been registered: "
+        log.info("User1 has been registered: "
                 + autheticationService.register(user1.getEmail(), user1.getPassword()));
-        log.debug("User1 has logged in: "
+        log.info("User1 has logged in: "
                 + autheticationService.login(user1.getEmail(), user1.getPassword()));
 
         UserService userService =
@@ -80,7 +80,7 @@ public class Main {
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(movieSession1, userFromDb);
-        log.debug("Cart with tix: " + shoppingCartService.getByUser(userFromDb));
+        log.info("Cart with tix: " + shoppingCartService.getByUser(userFromDb));
 
         OrderService orderService =
                 (OrderService) injector.getInstance(OrderService.class);
@@ -91,7 +91,7 @@ public class Main {
         Thread.sleep(5000);
         orderService.completeOrder(shoppingCartService.getByUser(userFromDb).getTickets(),
                 userFromDb);
-        log.debug("User's orders: " + orderService.getOrderHistory(userFromDb));
-        log.debug("Empty cart: " + shoppingCartService.getByUser(userFromDb));
+        log.info("User's orders: " + orderService.getOrderHistory(userFromDb));
+        log.info("Empty cart: " + shoppingCartService.getByUser(userFromDb));
     }
 }
