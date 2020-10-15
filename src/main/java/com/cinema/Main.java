@@ -13,6 +13,7 @@ import com.cinema.service.MovieSessionService;
 import com.cinema.service.OrderService;
 import com.cinema.service.ShoppingCartService;
 import com.cinema.service.UserService;
+import org.apache.log4j.Logger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +22,7 @@ public class Main {
     private static Injector injector = Injector.getInstance("com.cinema");
     private static final String DATE = "20201021";
     private static final String DATE_TIME = "2020-10-21T10:15:30";
+    private final static Logger log = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws AuthenticationException, InterruptedException {
         Movie movie = new Movie();
@@ -29,7 +31,7 @@ public class Main {
                 + "Ferris Bueller, a high-school slacker who skips school for a day in Chicago");
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
         movieService.add(movie);
-        movieService.getAll().forEach(System.out::println);
+        movieService.getAll().forEach(log::debug);
 
         CinemaHallService cinemaHallService =
                 (CinemaHallService)injector.getInstance(CinemaHallService.class);
@@ -41,8 +43,8 @@ public class Main {
         hall2.setCapacity(150);
         hall2.setDescription("A standard hall");
         cinemaHallService.add(hall2);
-        System.out.printf("All cinema halls: \n");
-        cinemaHallService.getAll().forEach(System.out::println);
+        log.debug("All cinema halls: \n");
+        cinemaHallService.getAll().forEach(log::debug);
 
         MovieSession movieSession1 = new MovieSession();
         movieSession1.setCinemaHall(hall1);
@@ -57,19 +59,19 @@ public class Main {
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(movieSession1);
         movieSessionService.add(movieSession2);
-        System.out.printf("All available sessions: \n");
+        log.debug("All available sessions: \n");
         movieSessionService.findAvailableSessions(movie.getId(),
                 LocalDate.parse(DATE, DateTimeFormatter.BASIC_ISO_DATE))
-                .forEach(System.out::println);
+                .forEach(log::debug);
 
         AutheticationService autheticationService =
                 (AutheticationService) injector.getInstance(AutheticationService.class);
         User user1 = new User();
         user1.setEmail("user@gmail.com");
         user1.setPassword("password");
-        System.out.println("User1 has been registered: "
+        log.debug("User1 has been registered: "
                 + autheticationService.register(user1.getEmail(), user1.getPassword()));
-        System.out.println("User1 has logged in: "
+        log.debug("User1 has logged in: "
                 + autheticationService.login(user1.getEmail(), user1.getPassword()));
 
         UserService userService =
@@ -78,7 +80,7 @@ public class Main {
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(movieSession1, userFromDb);
-        System.out.println("Cart with tix: " + shoppingCartService.getByUser(userFromDb));
+        log.debug("Cart with tix: " + shoppingCartService.getByUser(userFromDb));
 
         OrderService orderService =
                 (OrderService) injector.getInstance(OrderService.class);
@@ -89,7 +91,7 @@ public class Main {
         Thread.sleep(5000);
         orderService.completeOrder(shoppingCartService.getByUser(userFromDb).getTickets(),
                 userFromDb);
-        System.out.println("User's orders: " + orderService.getOrderHistory(userFromDb));
-        System.out.println("Empty cart: " + shoppingCartService.getByUser(userFromDb));
+        log.debug("User's orders: " + orderService.getOrderHistory(userFromDb));
+        log.debug("Empty cart: " + shoppingCartService.getByUser(userFromDb));
     }
 }
