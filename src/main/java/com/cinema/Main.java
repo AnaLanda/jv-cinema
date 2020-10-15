@@ -13,16 +13,16 @@ import com.cinema.service.MovieSessionService;
 import com.cinema.service.OrderService;
 import com.cinema.service.ShoppingCartService;
 import com.cinema.service.UserService;
-import org.apache.log4j.Logger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import org.apache.log4j.Logger;
 
 public class Main {
+    private static final Logger log = Logger.getLogger(Main.class.getName());
     private static Injector injector = Injector.getInstance("com.cinema");
     private static final String DATE = "20201021";
     private static final String DATE_TIME = "2020-10-21T10:15:30";
-    private final static Logger log = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws AuthenticationException, InterruptedException {
         Movie movie = new Movie();
