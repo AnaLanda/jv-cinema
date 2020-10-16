@@ -34,7 +34,7 @@ public class Main {
         movieService.getAll().forEach(log::info);
 
         CinemaHallService cinemaHallService =
-                (CinemaHallService)injector.getInstance(CinemaHallService.class);
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         CinemaHall hall1 = new CinemaHall();
         hall1.setCapacity(30);
         hall1.setDescription("A newly revamped VIP hall with a 3D screen and reclining armchairs");
@@ -74,9 +74,9 @@ public class Main {
         User loggedInUser = new User();
         try {
             loggedInUser = autheticationService.login(user1.getEmail(), user1.getPassword());
-            log.info("User " +  loggedInUser + " successfully logged in.");
+            log.info("User " + loggedInUser + " successfully logged in.");
         } catch (AuthenticationException e) {
-            log.warn("User " +  loggedInUser + " failed to log in.", e);
+            log.warn("User " + loggedInUser + " failed to log in.", e);
         }
 
         UserService userService =
