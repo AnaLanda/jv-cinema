@@ -69,14 +69,13 @@ public class Main {
         User user1 = new User();
         user1.setEmail("user@gmail.com");
         user1.setPassword("password");
-        log.info("User1 has been registered: "
+        log.info("A user has been registered: "
                 + autheticationService.register(user1.getEmail(), user1.getPassword()));
-        User loggedInUser = new User();
         try {
-            loggedInUser = autheticationService.login(user1.getEmail(), user1.getPassword());
-            log.info("User " + loggedInUser + " successfully logged in.");
+            autheticationService.login(user1.getEmail(), user1.getPassword());
+            log.info("A user successfully logged in.");
         } catch (AuthenticationException e) {
-            log.warn("User " + loggedInUser + " failed to log in.", e);
+            log.warn("A user failed to log in. AuthenticationException: ", e);
         }
 
         UserService userService =
