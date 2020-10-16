@@ -71,8 +71,13 @@ public class Main {
         user1.setPassword("password");
         log.info("User1 has been registered: "
                 + autheticationService.register(user1.getEmail(), user1.getPassword()));
-        log.info("User1 has logged in: "
-                + autheticationService.login(user1.getEmail(), user1.getPassword()));
+        User loggedInUser = new User();
+        try {
+            loggedInUser = autheticationService.login(user1.getEmail(), user1.getPassword());
+            log.info("User " +  loggedInUser + " successfully logged in.");
+        } catch (AuthenticationException e) {
+            log.warn("User " +  loggedInUser + " failed to log in.", e);
+        }
 
         UserService userService =
                 (UserService) injector.getInstance(UserService.class);
