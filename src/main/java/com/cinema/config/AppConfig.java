@@ -41,7 +41,8 @@ public class AppConfig {
         properties.put("hibernate.format_sql", environment.getProperty("hibernate.format_sql"));
         properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
         factoryBean.setHibernateProperties(properties);
-        factoryBean.setPackagesToScan("com.cinema");
+        factoryBean.setPackagesToScan("com.cinema.dao", "com.cinema.service",
+                "com.cinema.security", "com.cinema.model");
         return factoryBean;
     }
 }
