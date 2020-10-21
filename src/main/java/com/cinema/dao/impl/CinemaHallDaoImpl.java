@@ -2,18 +2,23 @@ package com.cinema.dao.impl;
 
 import com.cinema.dao.CinemaHallDao;
 import com.cinema.exceptions.DataProcessingException;
-import com.cinema.lib.Dao;
 import com.cinema.model.CinemaHall;
-import com.cinema.util.HibernateUtil;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class CinemaHallDaoImpl implements CinemaHallDao {
     private static final Logger log = Logger.getLogger(CinemaHallDaoImpl.class);
+    private final SessionFactory sessionFactory;
+
+    public CinemaHallDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public CinemaHall add(CinemaHall cinemaHall) {
@@ -21,7 +26,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
         Session session = null;
         log.info("Trying to add the cinema hall " + cinemaHall + " to the DB.");
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(cinemaHall);
             transaction.commit();
@@ -43,7 +48,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     @Override
     public List<CinemaHall> getAll() {
         log.info("Trying to get all cinema halls...");
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<CinemaHall> getAllHallsQuery =
                     session.createQuery("from CinemaHall", CinemaHall.class);
             return getAllHallsQuery.getResultList();

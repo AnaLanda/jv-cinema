@@ -2,20 +2,25 @@ package com.cinema.dao.impl;
 
 import com.cinema.dao.MovieSessionDao;
 import com.cinema.exceptions.DataProcessingException;
-import com.cinema.lib.Dao;
 import com.cinema.model.MovieSession;
-import com.cinema.util.HibernateUtil;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class MovieSessionDaoImpl implements MovieSessionDao {
     private static final Logger log = Logger.getLogger(MovieSessionDaoImpl.class);
+    private final SessionFactory sessionFactory;
+
+    public MovieSessionDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public MovieSession add(MovieSession movieSession) {
@@ -23,7 +28,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
         Session session = null;
         log.info("Trying to add the movie session " + movieSession + " to the DB.");
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(movieSession);
             transaction.commit();
@@ -46,7 +51,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     public List<MovieSession> findSessionsByIdAndDate(Long movieId, LocalDate date) {
         log.info("Trying to get all movie sessions for the movie with ID " + movieId
                 + " for the date " + date);
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<MovieSession> query = session.createQuery("from MovieSession ms "
                     + "join fetch ms.movie m "
                     + "join fetch ms.cinemaHall ch "
