@@ -8,21 +8,26 @@ import com.cinema.util.HibernateUtil;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
+    private static final Logger log = Logger.getLogger(MovieSessionDaoImpl.class);
+
     @Override
     public MovieSession add(MovieSession movieSession) {
         Transaction transaction = null;
         Session session = null;
+        log.info("Trying to add the movie session " + movieSession + " to the DB.");
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(movieSession);
             transaction.commit();
+            log.info("Successfully added the movie session " + movieSession + " to the DB.");
             return movieSession;
         } catch (Exception e) {
             if (transaction != null) {
@@ -39,6 +44,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
 
     @Override
     public List<MovieSession> findSessionsByIdAndDate(Long movieId, LocalDate date) {
+        log.info("Trying to get all movie sessions for the movie with ID " + movieId
+                + " for the date " + date);
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<MovieSession> query = session.createQuery("from MovieSession ms "
                     + "join fetch ms.movie m "
