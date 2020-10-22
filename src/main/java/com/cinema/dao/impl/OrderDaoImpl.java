@@ -2,19 +2,24 @@ package com.cinema.dao.impl;
 
 import com.cinema.dao.OrderDao;
 import com.cinema.exceptions.DataProcessingException;
-import com.cinema.lib.Dao;
 import com.cinema.model.Order;
 import com.cinema.model.User;
-import com.cinema.util.HibernateUtil;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class OrderDaoImpl implements OrderDao {
     private static final Logger log = Logger.getLogger(OrderDaoImpl.class);
+    private final SessionFactory sessionFactory;
+
+    public OrderDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Order add(Order order) {
@@ -22,7 +27,7 @@ public class OrderDaoImpl implements OrderDao {
         Session session = null;
         log.info("Trying to add the order " + order + " to the DB.");
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(order);
             transaction.commit();
@@ -44,7 +49,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> getByUser(User user) {
         log.info("Trying to get all orders of the user " + user);
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<Order> query = session.createQuery("SELECT DISTINCT o FROM Order o "
                     + "JOIN FETCH o.user u "
                     + "JOIN FETCH o.tickets t "
