@@ -24,7 +24,7 @@ public class MovieSessionMapper {
         movieSessionResponseDto.setMovieId(movieSession.getMovie().getId());
         movieSessionResponseDto.setCinemaHallId(movieSession.getCinemaHall().getId());
         movieSessionResponseDto.setShowTime(
-                movieSession.getShowTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
+                movieSession.getShowTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         return movieSessionResponseDto;
     }
 
