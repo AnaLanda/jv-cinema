@@ -8,7 +8,6 @@ import com.cinema.service.mapper.MovieSessionMapper;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/movie-sessions")
 public class MovieSessionController {
-    private static final Logger log = Logger.getLogger(MovieController.class);
     private final MovieSessionService movieSessionService;
     private final MovieSessionMapper movieSessionMapper;
 
@@ -32,10 +30,8 @@ public class MovieSessionController {
     @PostMapping
     public MovieSession addMovieSession(
             @RequestBody MovieSessionRequestDto movieSessionRequestDto) {
-        log.info("Trying to add MovieSessionRequestDto " + movieSessionRequestDto);
         MovieSession movieSession = movieSessionService.add(
                 movieSessionMapper.mapToMovieSession(movieSessionRequestDto));
-        log.info("Successfully added MovieRequestDto " + movieSessionRequestDto);
         return movieSession;
     }
 
