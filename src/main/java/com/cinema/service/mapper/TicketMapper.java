@@ -23,7 +23,7 @@ public class TicketMapper {
     public TicketResponseDto mapToDto(Ticket ticket) {
         TicketResponseDto ticketDto = new TicketResponseDto();
         ticketDto.setId(ticket.getId());
-        ticketDto.setMovieSessionResponseDto(movieSessionMapper.mapToDto(ticket.getMovieSession()));
+        ticketDto.setMovieSessionId(ticket.getMovieSession().getId());
         ticketDto.setUserEmail(ticket.getUser().getEmail());
         return ticketDto;
     }

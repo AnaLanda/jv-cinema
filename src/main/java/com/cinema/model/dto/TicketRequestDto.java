@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class TicketRequestDto {
-    private MovieSessionRequestDto movieSessionRequestDto;
+    private Long movieSessionId;
     private String userEmail;
 }
