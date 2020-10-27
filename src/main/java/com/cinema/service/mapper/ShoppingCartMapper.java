@@ -11,7 +11,6 @@ public class ShoppingCartMapper {
 
     public ShoppingCartResponseDto mapToDto(ShoppingCart shoppingCart) {
         ShoppingCartResponseDto shoppingCartDto = new ShoppingCartResponseDto();
-        shoppingCartDto.setId(shoppingCart.getId());
         List<Long> ticketIds = shoppingCart.getTickets().stream()
                 .map(ticket -> ticket.getId())
                 .collect(Collectors.toList());
