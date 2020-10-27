@@ -1,6 +1,5 @@
 package com.cinema.controllers;
 
-import com.cinema.model.CinemaHall;
 import com.cinema.model.dto.CinemaHallRequestDto;
 import com.cinema.model.dto.CinemaHallResponseDto;
 import com.cinema.service.CinemaHallService;
@@ -26,10 +25,8 @@ public class CinemaHallController {
     }
 
     @PostMapping
-    public CinemaHall addCinemaHall(@RequestBody CinemaHallRequestDto cinemaHallRequestDto) {
-        CinemaHall cinemaHall = cinemaHallService.add(
-                cinemaHallMapper.mapToCinemaHall(cinemaHallRequestDto));
-        return cinemaHall;
+    public void addCinemaHall(@RequestBody CinemaHallRequestDto cinemaHallRequestDto) {
+        cinemaHallService.add(cinemaHallMapper.mapToCinemaHall(cinemaHallRequestDto));
     }
 
     @GetMapping

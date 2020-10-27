@@ -1,6 +1,5 @@
 package com.cinema.controllers;
 
-import com.cinema.model.MovieSession;
 import com.cinema.model.dto.MovieSessionRequestDto;
 import com.cinema.model.dto.MovieSessionResponseDto;
 import com.cinema.service.MovieSessionService;
@@ -28,11 +27,9 @@ public class MovieSessionController {
     }
 
     @PostMapping
-    public MovieSession addMovieSession(
+    public void addMovieSession(
             @RequestBody MovieSessionRequestDto movieSessionRequestDto) {
-        MovieSession movieSession = movieSessionService.add(
-                movieSessionMapper.mapToMovieSession(movieSessionRequestDto));
-        return movieSession;
+        movieSessionService.add(movieSessionMapper.mapToMovieSession(movieSessionRequestDto));
     }
 
     @GetMapping("/available")

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CinemaHallResponseDto {
-    private long id;
+    private Long id;
     private int capacity;
     private String description;
 }

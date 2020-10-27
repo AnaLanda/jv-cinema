@@ -6,6 +6,7 @@ import com.cinema.model.MovieSession;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -44,6 +45,17 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public Optional<MovieSession> findById(Long id) {
+        log.info("Trying to get the movie session with the ID " + id);
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.of(session.get(MovieSession.class, id));
+        } catch (Exception e) {
+            throw new DataProcessingException("Failed to find a movie session with the ID "
+                    + id, e);
         }
     }
 
