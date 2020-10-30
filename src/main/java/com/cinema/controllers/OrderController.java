@@ -1,6 +1,7 @@
 package com.cinema.controllers;
 
 import com.cinema.model.ShoppingCart;
+import com.cinema.model.User;
 import com.cinema.model.dto.OrderResponseDto;
 import com.cinema.service.OrderService;
 import com.cinema.service.ShoppingCartService;
@@ -9,10 +10,11 @@ import com.cinema.service.mapper.OrderMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,15 +35,18 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public void completeOrder(@RequestParam Long userId) {
+    public void completeOrder(Authentication authentication) {
+        UserDetails details = (UserDetails) authentication.getPrincipal();
         ShoppingCart shoppingCart = shoppingCartService
-                .getByUser(userService.findById(userId));
+                .getByUser(userService.findByEmail(details.getUsername()).get());
         orderService.completeOrder(shoppingCart.getTickets(), shoppingCart.getUser());
     }
 
     @GetMapping
-    public List<OrderResponseDto> getOrderHistory(@RequestParam Long userId) {
-        return orderService.getOrderHistory(userService.findById(userId)).stream()
+    public List<OrderResponseDto> getOrderHistory(Authentication authentication) {
+        UserDetails details = (UserDetails) authentication.getPrincipal();
+        User user = userService.findByEmail(details.getUsername()).get();
+        return orderService.getOrderHistory(user).stream()
                 .map(orderMapper::mapToDto)
                 .collect(Collectors.toList());
     }
