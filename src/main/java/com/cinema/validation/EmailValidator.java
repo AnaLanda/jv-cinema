@@ -13,5 +13,4 @@ public class EmailValidator implements
         return email != null
                 && email.matches(EMAIL_REGEX);
     }
-
 }
