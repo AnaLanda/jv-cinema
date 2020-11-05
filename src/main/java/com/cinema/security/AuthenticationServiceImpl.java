@@ -1,6 +1,5 @@
 package com.cinema.security;
 
-import com.cinema.exceptions.AuthenticationException;
 import com.cinema.model.Role;
 import com.cinema.model.User;
 import com.cinema.service.ShoppingCartService;
@@ -22,18 +21,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.shoppingCartService = shoppingCartService;
-    }
-
-    @Override
-    public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email).get();
-        log.info("A user with the email " + email + " is trying to log in");
-        if (passwordEncoder.matches(password, user.getPassword())) {
-            log.info("The user with the email " + email + " has logged in");
-            return user;
-        } else {
-            throw new AuthenticationException("Incorrect email or password");
-        }
     }
 
     @Override
