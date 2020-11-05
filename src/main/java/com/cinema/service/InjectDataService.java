@@ -21,6 +21,6 @@ public class InjectDataService {
         Role user = Role.of("USER");
         roleService.add(user);
         Role admin = roleService.add(Role.of("ADMIN"));
-        authenticationService.register("admin-@gmail.com", "1234", Set.of(admin));
+        authenticationService.register("admin@gmail.com", "1234", Set.of(admin));
     }
 }
