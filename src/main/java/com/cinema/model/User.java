@@ -1,9 +1,11 @@
 package com.cinema.model;
 
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.Data;
@@ -18,4 +20,6 @@ public class User {
     private Long id;
     private String email;
     private String password;
+    @ManyToMany
+    private Set<Role> roles;
 }
